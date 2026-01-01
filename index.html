@@ -2,9 +2,12 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>finda9531</title>
     
+    <meta name="theme-color" content="#DFCEEA" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* =========================================
@@ -70,15 +73,19 @@
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
             color: var(--text-main);
             overflow: hidden; 
-            background: var(--bg-gradient);
+            
+            /* 引っ張った時の背景色対策 */
+            background-color: var(--accent-color);
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #1a1a2e; }
         }
 
         /* 背景固定 */
         .fixed-background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; 
-            height: 100vh;
+            width: 100%; height: 100dvh;
             background: var(--bg-gradient);
             z-index: -10;
         }
@@ -111,8 +118,6 @@
             overflow-x: hidden;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            /* 安全領域確保 */
-            padding-bottom: env(safe-area-inset-bottom); 
         }
 
         /* =========================================
@@ -137,10 +142,11 @@
         .flow-area {
             width: 100%;
             scroll-snap-align: start; 
-            /* 下端の余白調整 */
-            padding: 80px 1rem calc(2rem + env(safe-area-inset-bottom)); 
-            
+            /* env(safe-area...)は削除し、標準的な余白に戻しました */
+            padding: 80px 1rem 4rem; 
             box-sizing: border-box;
+            
+            /* 中身の配置設定 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -259,7 +265,7 @@
                 </div>
 
                 <p class="bio">
-                    だいたい寝てます。
+                    たいてい寝ています。
                 </p>
 
                 <div class="links">
@@ -335,7 +341,7 @@
     </div>
 
     <script>
-        /* --- アニメーション表示のロジック --- */
+        /* --- アニメーション --- */
         const targets = document.querySelectorAll('.reveal-target');
         const observerOptions = {
             root: document.querySelector('.snap-container'),
@@ -355,30 +361,21 @@
             observer.observe(target);
         });
 
-        /* --- 画像切り替えのロジック --- */
-        // ページ読み込み完了後に回線チェックを行う
+        /* --- 画像切り替え --- */
         window.addEventListener('load', () => {
             const avatar = document.getElementById('avatar');
-            // 高画質版のファイル名
             const highResSrc = "IMG_0029.png"; 
 
-            // Network Information API の取得 (Chromeなど)
             const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-
-            // 基本的には「高画質版」を表示する前提で、
-            // 「明らかに遅い」とわかった場合だけ軽量版のままにするロジック
             let shouldUseHighRes = true;
 
             if (connection) {
-                // 省電力モード(saveData)か、実効速度が3g以下なら「遅い」とみなす
-                // (4gであれば高画質にする)
                 if (connection.saveData || 
                    (connection.effectiveType && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g'))) {
                     shouldUseHighRes = false;
                 }
             }
             
-            // Safariなどは connection が undefined なので true (高画質) になる
             if (shouldUseHighRes) {
                 avatar.src = highResSrc;
             }
