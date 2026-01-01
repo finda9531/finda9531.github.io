@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>finda9531</title>
+    
+    <meta name="theme-color" content="#DFCEEA" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* =========================================
@@ -69,6 +73,12 @@
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
             color: var(--text-main);
             overflow: hidden; /* body自体のスクロールは無効化 */
+            
+            /* ★修正: スクロールバウンス（引っ張った時）の背景色を白ではなくテーマ色にする */
+            background-color: var(--accent-color);
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #1a1a2e; }
         }
 
         /* 背景固定 */
@@ -105,6 +115,7 @@
             width: 100%;
             height: 100dvh;
             overflow-y: scroll;
+            overflow-x: hidden; /* 横スクロール禁止 */
             scroll-snap-type: y mandatory; /* スナップ有効 */
             scroll-behavior: smooth;
         }
@@ -130,16 +141,15 @@
         */
         .flow-area {
             width: 100%;
-            min-height: 100dvh; /* 最低でも1画面分 */
-            scroll-snap-align: start; /* このエリアの先頭にはスナップする */
-            padding: 80px 1rem 120px; /* 上下に余白 */
+            scroll-snap-align: start; 
+            padding: 80px 1rem 4rem; /* 下のパディング調整 */
             box-sizing: border-box;
             
             /* 中身の配置設定 */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem; /* ★カード間の距離を詰める */
+            gap: 2rem; /* カード間の距離 */
         }
 
         /* カードの共通設定 */
@@ -252,7 +262,6 @@
                 
                 <div class="location-info">
                     <div><i class="fa-solid fa-location-dot"></i> Shinshu, Japan</div>
-                   
                 </div>
 
                 <p class="bio">
@@ -280,7 +289,7 @@
                     <div class="timeline-item">
                         <span class="time-date">2019 - 2021</span>
                         <div class="time-title">世田谷学園中学校</div>
-                        <div cゲームs="time-desc"></div>
+                        <div class="time-desc"></div>
                     </div>
 
                     <div class="timeline-item">
@@ -320,14 +329,14 @@
             <div class="card reveal-target">
                 <h2><i class="fa-brands fa-youtube"></i> minecraft</h2>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/watch?v=--1pp-LdBh8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/--1pp-LdBh8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
                 <p class="video-desc">
                    まるばつゲームつくったよ
                 </p>
             </div>
 
-            </div>
+        </div>
 
     </div>
 
@@ -344,11 +353,8 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // 画面に入ったらクラス付与
                     entry.target.classList.add('active-reveal');
                 } else {
-                    // 画面外に出たらクラス削除（ふわっと消える演出用）
-                    // ※ リスト表示で見にくくなる場合はこの else ブロックを削除してください
                     entry.target.classList.remove('active-reveal');
                 }
             });
