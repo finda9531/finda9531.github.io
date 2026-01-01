@@ -1,11 +1,270 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>My Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* =========================================
+           基本設定 (変数の定義)
+           ========================================= */
+        :root {
+            /* --- 共通設定 --- */
+            --accent-color: #DFCEEA;
+
+            /* --- ライトモード用 (デフォルト) --- */
+            --bg-gradient: linear-gradient(135deg, #DFCEEA 0%, #B5A0D9 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --card-shadow: 0 8px 32px 0 rgba(100, 100, 150, 0.2);
+            
+            --text-main: #5D5D5D;
+            --text-sub: #666666;
+            --title-color: #5D5D5D;
+            --title-shadow: none;
+
+            --shape-1-color: #FFD1DC;
+            --shape-2-color: #A890D3;
+
+            --avatar-container-bg: rgba(255,255,255,0.5);
+            --avatar-border-color: #ffffff;
+            
+            --btn-bg: rgba(255, 255, 255, 0.8);
+            --btn-border: 1px solid transparent;
+            --btn-text: #555;
+            --btn-hover-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        /* =========================================
+           ダークモード時の上書き設定
+           ========================================= */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* 背景: 深い紫〜ダークグレー */
+                --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #2a2333 100%);
+                
+                /* グラスモーフィズム: 黒ベース */
+                --glass-bg: rgba(20, 20, 30, 0.65);
+                --glass-border: rgba(223, 206, 234, 0.15);
+                --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+
+                --text-main: #f0f0f0;
+                --text-sub: #b0b0b0;
+                --title-color: var(--accent-color); /* タイトルをアクセント色に */
+                --title-shadow: 0 0 10px rgba(223, 206, 234, 0.3); /* 発光表現 */
+
+                --shape-1-color: #4a3b69;
+                --shape-2-color: #2d4059;
+
+                /* アバター周りをグラデーションに */
+                --avatar-container-bg: linear-gradient(45deg, var(--accent-color), #6654F1);
+                --avatar-border-color: #1a1a2e; /* 背景色と同化させて浮かす */
+
+                /* ボタン: 暗めの透明・枠線あり */
+                --btn-bg: rgba(255, 255, 255, 0.05);
+                --btn-border: 1px solid rgba(255, 255, 255, 0.1);
+                --btn-text: #f0f0f0;
+                --btn-hover-shadow: 0 0 15px rgba(223, 206, 234, 0.2);
+            }
+        }
+
+        /* =========================================
+           スタイル本体
+           ========================================= */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            overflow: hidden;
+            transition: color 0.3s, background 0.3s; /* モード切替時にふわっと変化 */
+        }
+
+        /* 背景図形 */
+        .background-shapes div {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.7;
+            animation: float 10s infinite ease-in-out alternate;
+            /* ダークモード時はぼかしを強くする微調整は変数化せず共通プロパティで対応 */
+        }
+        @media (prefers-color-scheme: dark) {
+            .background-shapes div { filter: blur(90px); opacity: 0.5; animation-duration: 12s; }
+        }
+
+        .shape-1 {
+            width: 300px; height: 300px;
+            background: var(--shape-1-color);
+            top: 10%; left: 20%;
+        }
+        .shape-2 {
+            width: 250px; height: 250px;
+            background: var(--shape-2-color);
+            bottom: 10%; right: 20%;
+            animation-delay: -5s;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        /* カード */
+        .card {
+            background: var(--glass-bg);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 3rem 2rem;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        /* ダークモード時のホバー発光演出 */
+        @media (prefers-color-scheme: dark) {
+            .card { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+            .card:hover {
+                box-shadow: 0 10px 40px rgba(223, 206, 234, 0.1);
+                border-color: rgba(223, 206, 234, 0.4);
+            }
+        }
+
+        /* アバター */
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            padding: 5px;
+            background: var(--avatar-container-bg);
+            border: 1px solid rgba(255,255,255,0.8); /* ライトモード用デフォルト */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+            .avatar-container { border: none; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 3px solid var(--avatar-border-color); /* ダークモード時は背景と同色で枠を作る */
+        }
+
+        /* テキスト */
+        h1 {
+            font-size: 1.8rem;
+            margin: 0 0 0.5rem;
+            color: var(--title-color);
+            text-shadow: var(--title-shadow);
+            transition: color 0.3s;
+        }
+        p.bio {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            margin-bottom: 2rem;
+        }
+
+        /* リンクボタン */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: var(--btn-border);
+        }
+        .link-btn i { margin-right: 10px; font-size: 1.2rem; }
+
+        /* ホバーアクション (ライト/ダークで挙動を分岐) */
+        
+        /* 共通のホバー挙動 */
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--btn-hover-shadow);
+        }
+
+        /* ライトモード時のホバー色 (ブランドカラー) */
+        @media (prefers-color-scheme: light) {
+            .link-btn:hover { color: #fff; }
+            .youtube:hover { background: #FF6B6B; }
+            .github:hover { background: #333; }
+            .twitter:hover { background: #000000; }
+        }
+
+        /* ダークモード時のホバー色 (統一アクセントカラー発光) */
+        @media (prefers-color-scheme: dark) {
+            .link-btn { padding: 14px 20px; } /* ダークモードは少し大きめ指定があったため反映 */
+            .link-btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-color);
+                border-color: var(--accent-color);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 2rem 1.5rem; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-    <h1>こんにちは！finda9531のページへようこそ</h1>
-    <p>GitHub Pagesでサイトを作成中です。</p>
+
+    <div class="background-shapes">
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+    </div>
+
+    <div class="card">
+        <div class="avatar-container">
+            <img src="image_0.png" alt="Icon" class="avatar">
+        </div>
+
+        <h1>finda</h1>
+        <p class="bio">たいてい寝ています</p>
+
+        <div class="links">
+            <a href="https://youtube.com/@finda9531" target="_blank" class="link-btn youtube">
+                <i class="fa-brands fa-youtube"></i> YouTube
+            </a>
+
+            <a href="https://github.com/finda9531" target="_blank" class="link-btn github">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+
+            <a href="https://twitter.com/finda9531" target="_blank" class="link-btn twitter">
+                <i class="fa-brands fa-x-twitter"></i> Twitter / X
+            </a>
+        </div>
+    </div>
+
 </body>
 </html>
