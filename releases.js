@@ -21,35 +21,35 @@ const releasesData = [
         separator: false
     },
     {
-        category: "", // 説明が不要な場合は空文字または省略
+        category: "acsuログインの時のやつを勝手に押してくれるChromeの拡張機能", // 説明が不要な場合は空文字または省略
         url: "https://chromewebstore.google.com/detail/ealps-login-helper/albeikojhajhbabpafcilclmcnffdkik?authuser=0&hl=ja",
         icon: "fa-brands fa-chrome",
         title: "eAlps Login Helper(Chrome)",
         date: "Download for Chrome",
         note: "Click to view store page",
-        separator: false
+        separator: true
     },
     {
-        category: "acsuログインの時のやつを勝手に押してくれるChromeの拡張機能",
+        category: "",
         url: "https://github.com/finda9531/-/releases",
         icon: "fa-brands fa-github-alt",
         title: "eAlps Login Helper (GitHub)",
         date: "Released on Jan 2, 2026",
         note: "Click to view release notes",
-        separator: true
+        separator: false
     },
     
    {
-        category: "anki convertor",
+        category: "webでテキストファイルをcsv形式にできるぞ",
         url: "https://finda9531.github.io/anki-card-converter/",
         icon: "fa-solid fa-link",
         title: "Anki .txt to .csv convertor",
         date: "Released on , Jun 15, 2026",
         note: "Click to view web page",
-        separator: false
+        separator: true
     },
    {
-        category: "anki convertor",
+        category: "高速でテキストファイルを.apkg形式にできるぞ！！(winアプリ)",
         url: "https://github.com/finda9531/anki-txt-to-apkg-con/",
         icon: "fa-brands fa-github-alt",
         title: "Anki .txt convertor",
