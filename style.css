@@ -249,3 +249,17 @@ h2 { font-size: 1.2rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bott
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 .video-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; }
+
+/* =========================================
+   スマホ
+   ========================================= */
+@media (max-width: 768px) {
+    /* 後半のスクロールエリア（flow-area）にあるカードは
+       最初から不透明度1（表示状態）にし、位置ズレやアニメーションを無効化します 
+    */
+    .flow-area .reveal-target {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
