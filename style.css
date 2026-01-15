@@ -1,0 +1,251 @@
+/* =========================================
+    基本設定
+    ========================================= */
+:root {
+    --accent-color: #DFCEEA;
+    
+    /* ライトモード：文字色と同じ灰色に設定 */
+    --repo-icon-color: #5D5D5D;
+
+    /* ライトモード */
+    --bg-gradient: linear-gradient(135deg, #DFCEEA 0%, #B5A0D9 100%);
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --card-shadow: 0 8px 32px 0 rgba(100, 100, 150, 0.2);
+    
+    --text-main: #5D5D5D;
+    --text-sub: #666666;
+    --title-color: #5D5D5D;
+    --title-shadow: none;
+
+    --shape-1-color: #FFD1DC;
+    --shape-2-color: #A890D3;
+    
+    --btn-bg: rgba(255, 255, 255, 0.8);
+    --btn-border: 1px solid rgba(255,255,255,0.5);
+    --btn-text: #555;
+    --btn-hover-shadow: 0 6px 12px rgba(0,0,0,0.1);
+
+    --line-color: rgba(255,255,255,0.5);
+}
+
+/* ダークモード */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #2a2333 100%);
+        --glass-bg: rgba(20, 20, 30, 0.65);
+        --glass-border: rgba(223, 206, 234, 0.15);
+        --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+
+        
+        --repo-icon-color: var(--accent-color);
+
+        --text-main: #f0f0f0;
+        --text-sub: #b0b0b0;
+        --title-color: var(--accent-color);
+        --title-shadow: 0 0 10px rgba(223, 206, 234, 0.3);
+
+        --shape-1-color: #4a3b69;
+        --shape-2-color: #2d4059;
+
+        --btn-bg: rgba(255, 255, 255, 0.05);
+        --btn-border: 1px solid rgba(255, 255, 255, 0.1);
+        --btn-text: #f0f0f0;
+        --btn-hover-shadow: 0 0 15px rgba(223, 206, 234, 0.2);
+        
+        --line-color: rgba(255,255,255,0.15);
+    }
+}
+
+/* =========================================
+    レイアウト構造
+    ========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    color: var(--text-main);
+    overflow: hidden; 
+    
+    /* 引っ張った時の背景色対策 */
+    background-color: var(--accent-color);
+}
+@media (prefers-color-scheme: dark) {
+    body { background-color: #1a1a2e; }
+}
+
+/* 背景固定 */
+.fixed-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100dvh;
+    background: var(--bg-gradient);
+    z-index: -10;
+}
+
+/* 背景図形 */
+.background-shapes div {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.7;
+    animation: float 10s infinite ease-in-out alternate;
+}
+@media (prefers-color-scheme: dark) {
+    .background-shapes div { filter: blur(90px); opacity: 0.5; animation-duration: 12s; }
+}
+
+.shape-1 { width: 300px; height: 300px; background: var(--shape-1-color); top: 10%; left: 20%; }
+.shape-2 { width: 250px; height: 250px; background: var(--shape-2-color); bottom: 10%; right: 20%; animation-delay: -5s; }
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(30px) scale(1.1); }
+}
+
+/* スクロールコンテナ */
+.snap-container {
+    width: 100%;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+/* =========================================
+    前半：1画面1スナップのセクション
+    =========================================
+*/
+.snap-section {
+    width: 100%;
+    height: 100dvh; 
+    scroll-snap-align: start; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* =========================================
+    後半：通常スクロールエリア (Flow Area)
+    =========================================
+*/
+.flow-area {
+    width: 100%;
+    scroll-snap-align: start; 
+    padding: 2rem 1rem 4rem; 
+    box-sizing: border-box;
+    
+    /* 中身の配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem; 
+}
+
+/* カードの共通設定 */
+.card {
+    background: var(--glass-bg);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    position: relative;
+    
+    /* アニメーション用初期状態 */
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.active-reveal {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+/* --- コンテンツスタイル --- */
+.text-center { text-align: center; }
+
+/* 区切り線 (HR) のスタイル  */
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--line-color);
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.avatar {
+    width: 120px; height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1 { font-size: 1.8rem; margin: 0.5rem 0; color: var(--title-color); text-align: center; }
+h2 { font-size: 1.2rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line-color); color: var(--title-color); display: flex; align-items: center; gap: 10px; }
+.bio { font-size: 0.95rem; color: var(--text-sub); margin-bottom: 1.5rem; line-height: 1.6; text-align: center; }
+
+.location-info { display: flex; justify-content: center; gap: 20px; margin-bottom: 2rem; font-size: 0.9rem; color: var(--text-sub); }
+.location-info div { display: flex; align-items: center; gap: 6px; }
+
+.links { display: flex; flex-direction: column; gap: 12px; }
+.link-btn {
+    display: flex; align-items: center; justify-content: center; text-decoration: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; font-size: 1rem; transition: all 0.3s ease;
+    background: var(--btn-bg); color: var(--btn-text); border: var(--btn-border);
+}
+.link-btn i { margin-right: 10px; font-size: 1.2rem; }
+.link-btn:hover { transform: translateY(-3px); box-shadow: var(--btn-hover-shadow); }
+
+@media (prefers-color-scheme: light) {
+    .link-btn:hover { color: #fff; }
+    .youtube:hover { background: #FF6B6B; }
+    .github:hover { background: #333; }
+    .twitter:hover { background: #000000; }
+}
+@media (prefers-color-scheme: dark) {
+    .link-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--accent-color); border-color: var(--accent-color); }
+}
+
+/* Timeline */
+.timeline { position: relative; padding-left: 1.5rem; border-left: 2px solid var(--line-color); }
+.timeline-item { position: relative; margin-bottom: 1.5rem; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.3rem; width: 12px; height: 12px; background: var(--accent-color); border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); }
+.time-date { font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.2rem; display: block; }
+.time-title { font-weight: bold; font-size: 1rem; }
+.time-desc { font-size: 0.9rem; margin-top: 0.3rem; color: var(--text-sub); }
+
+/* GitHub/Store Card */
+.github-card {
+    background: rgba(0,0,0,0.05); border-radius: 10px; padding: 1rem; margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; border: 1px solid transparent; transition: all 0.3s;
+}
+.github-card:hover { background: rgba(0,0,0,0.1); border-color: var(--repo-icon-color); transform: scale(1.02); }
+@media (prefers-color-scheme: dark) {
+    .github-card { background: rgba(255,255,255,0.05); }
+    .github-card:hover { background: rgba(255,255,255,0.1); }
+}
+
+.repo-icon { 
+    font-size: 2rem; 
+    /* ダークモードで明るい紫、ライトモードで灰色 */
+    color: var(--repo-icon-color); 
+}
+
+.repo-info h3 { margin: 0; font-size: 1rem; }
+.repo-info p { margin: 0.3rem 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+/* YouTube */
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.video-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; }
