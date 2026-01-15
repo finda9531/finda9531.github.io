@@ -50,7 +50,7 @@ const releasesData = [
     },
    {
         category: "高速でテキストファイルを.apkg形式にできるぞ！！(winアプリ)",
-        url: "https://github.com/finda9531/anki-txt-to-apkg-con/",
+        url: "https://github.com/finda9531/anki-txt-to-apkg-con/releases",
         icon: "fa-brands fa-github-alt",
         title: "Anki .txt convertor",
         date: "Released on , Jun 15, 2026",
