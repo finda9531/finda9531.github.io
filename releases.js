@@ -55,6 +55,6 @@ const releasesData = [
         title: "Anki .txt convertor",
         date: "Released on , Jun 15, 2026",
         note: "Click to view Rerease page",
-        separator: true
+        separator: false
     },
 ];
