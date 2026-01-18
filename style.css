@@ -130,7 +130,7 @@ body {
 }
 
 /* =========================================
-    後半：通常スクロールエリア (Flow Area)
+    後半：通常スクロールエリア (Flow Area / Bento Grid)
     =========================================
 */
 .flow-area {
@@ -139,11 +139,14 @@ body {
     padding: 2rem 1rem 4rem; 
     box-sizing: border-box;
     
-    /* 中身の配置設定 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem; 
+    /* Bento Grid設定 */
+    display: grid;
+    /* 最小300pxの幅を確保しつつ、画面幅に合わせて列数を自動調整 */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: stretch; /* 高さを揃える */
 }
 
 /* カードの共通設定 */
@@ -155,8 +158,15 @@ body {
     border-radius: 20px;
     border: 1px solid var(--glass-border);
     padding: 2rem;
-    width: 100%;
-    max-width: 400px;
+    
+    /* Grid対応の変更点 */
+    width: auto;
+    max-width: none;
+    height: 100%; /* グリッド内で高さを揃える */
+    display: flex;
+    flex-direction: column;
+    
+    box-sizing: border-box;
     text-align: left;
     position: relative;
     
@@ -238,7 +248,6 @@ h2 { font-size: 1.2rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bott
 
 .repo-icon { 
     font-size: 2rem; 
-    /* ダークモードで明るい紫、ライトモードで灰色 */
     color: var(--repo-icon-color); 
 }
 
@@ -250,13 +259,25 @@ h2 { font-size: 1.2rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bott
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 .video-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; }
 
+/* --- Bento Grid用 拡張クラス --- */
+/* PC画面でのみ有効（スマホでは1列になるので無視される） */
+@media (min-width: 769px) {
+    .col-span-2 { grid-column: span 2; }
+    .row-span-2 { grid-row: span 2; }
+}
+
 /* =========================================
    スマホ
    ========================================= */
 @media (max-width: 768px) {
-    /* 後半のスクロールエリア（flow-area）にあるカードは
-       最初から不透明度1（表示状態）にし、位置ズレやアニメーションを無効化します 
-    */
+    /* グリッドを強制的に1列にする */
+    .flow-area {
+        grid-template-columns: 1fr;
+        padding: 2rem 1rem 8rem;
+    }
+    
+    /* 後半のスクロールエリアにあるカードは
+       最初から不透明度1（表示状態）にし、位置ズレやアニメーションを無効化 */
     .flow-area .reveal-target {
         opacity: 1 !important;
         transform: none !important;
