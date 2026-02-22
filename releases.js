@@ -1,13 +1,13 @@
-/* リリースの追加方法：
-  以下のリストに新しいオブジェクトを追加してください。
+/* カード
   
-  category: "メモ帳" などの説明テキスト
-  url: リンク先URL
-  icon: FontAwesomeのクラス名（例: "fa-brands fa-github-alt", "fa-brands fa-chrome"）
+  
+  category: 説明テキスト
+  url:
+  icon: FontAwesomeのクラス名
   title: タイトル
-  date: "Released on Jan 2, 2026" などの日付テキスト
-  note: "Click to view..." などの注釈
-  separator: true にすると、その要素の上に区切り線(HR)が入ります
+  date: 日付テキスト
+  note: 注釈
+  separator: true にすると、その要素の上に区切り線
 */
 
 const releasesData = [
@@ -21,7 +21,7 @@ const releasesData = [
         separator: false
     },
     {
-        category: "acsuログインの時のやつを勝手に押してくれるChromeの拡張機能", // 説明が不要な場合は空文字または省略
+        category: "acsuログインの時のやつを勝手に押してくれるChromeの拡張機能",
         url: "https://chromewebstore.google.com/detail/ealps-login-helper/albeikojhajhbabpafcilclmcnffdkik?authuser=0&hl=ja",
         icon: "fa-brands fa-chrome",
         title: "eAlps Login Helper(Chrome)",
